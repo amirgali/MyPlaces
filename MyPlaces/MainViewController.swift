@@ -43,8 +43,19 @@ class MainViewController: UITableViewController {
         // Поработаем с изображениями. Присвоим UIImage изображения с названиями заведений
         cell.imageView?.image = UIImage(named: restaurantNames[indexPath.row])
         
+        // Сделаем изображения круглыми. Сначала скруглим imageView
+        cell.imageView?.layer.cornerRadius = cell.frame.size.height / 2
+        // Затем обрежем изображение по границе imageView
+        cell.imageView?.clipsToBounds = true
         
         return cell
+    }
+    
+    
+    // MARK: - Table view delegate
+    // За высоту строки отвечает этот метод
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 85
     }
    
 
