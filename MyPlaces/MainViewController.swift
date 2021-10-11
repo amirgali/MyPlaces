@@ -8,13 +8,10 @@
 import UIKit
 
 class MainViewController: UITableViewController {
+
     
-    let restaurantNames = [
-        "Burger Heroes", "Kitchen", "Bonsai", "Дастархан",
-        "Индокитай", "X.O.", "Балкан Гриль", "Sherlock Holmes",
-        "Speak Easy", "Morris Pub", "Вкусные истории",
-        "Классик", "Love&Life", "Шок", "Бочка"
-    ]
+    // Мы должны заменить массив с названиями заведений на массив с типом нашей модели - с объектами Place c name, location, type, image
+    let places = Place.getPlaces()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +26,7 @@ class MainViewController: UITableViewController {
         
         
         // Вернем количество ячеек равное количеству элементов массива
-        return restaurantNames.count
+        return places.count
     }
 
     
@@ -38,10 +35,13 @@ class MainViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
 
         // row - возвращает целочисленной значение индекса
-        cell.nameLabel?.text = restaurantNames[indexPath.row]
+        cell.nameLabel?.text = places[indexPath.row].name
+        
+        cell.locationLabel.text = places[indexPath.row].location
+        cell.typeLabel.text = places[indexPath.row].type
         
         // Поработаем с изображениями. Присвоим UIImage изображения с названиями заведений
-        cell.imageOfPlace?.image = UIImage(named: restaurantNames[indexPath.row])
+        cell.imageOfPlace?.image = UIImage(named: places[indexPath.row].image)
         
         // Сделаем изображения круглыми. Сначала скруглим imageView
         cell.imageOfPlace?.layer.cornerRadius = cell.imageOfPlace.frame.size.height / 2
@@ -51,13 +51,6 @@ class MainViewController: UITableViewController {
         return cell
     }
     
-    
-    // MARK: - Table view delegate
-    // За высоту строки отвечает этот метод
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 85
-    }
-   
 
     /*
     // MARK: - Navigation
@@ -68,5 +61,7 @@ class MainViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction func cancelAction(_ segue: UIStoryboardSegue) { }
 
 }
