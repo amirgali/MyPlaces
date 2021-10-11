@@ -23,7 +23,9 @@ class NewPlaceViewController: UITableViewController {
     // MARK: Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-         
+            // Добавим 2 костанты с изображениями камеры и фото
+            let cameraIcon = #imageLiteral(resourceName: "camera")
+            let photoIcon = #imageLiteral(resourceName: "photo")
             
             // Добавляем ActionSheet для добавления изображения
             let actionSheet = UIAlertController(title: nil,
@@ -34,11 +36,17 @@ class NewPlaceViewController: UITableViewController {
                 // TODO: вызовем метод chooseImagePicker для выбора изображения
                 self.chooseImagePicker(source: .camera)
             }
+            // Устанавливаем изображение этому пункту меню
+            camera.setValue(cameraIcon, forKey: "image")
+            camera.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
             
             let photo = UIAlertAction(title: "Photo", style: .default) { _ in
                 // TODO: вызовем метод chooseImagePicker для фото и камеры
                 self.chooseImagePicker(source: .photoLibrary)
             }
+            // Устанавливаем изображение этому пункту меню
+            photo.setValue(photoIcon, forKey: "image")
+            photo.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
             
             let cancel = UIAlertAction(title: "Cancel", style: .cancel)
             
