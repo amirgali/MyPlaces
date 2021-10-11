@@ -8,6 +8,9 @@
 import UIKit
 
 class NewPlaceViewController: UITableViewController {
+    
+    @IBOutlet weak var imageOfPlace: UIImageView!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +23,8 @@ class NewPlaceViewController: UITableViewController {
     // MARK: Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
+         
+            
             // Добавляем ActionSheet для добавления изображения
             let actionSheet = UIAlertController(title: nil,
                                                 message: nil,
@@ -64,11 +69,15 @@ extension NewPlaceViewController: UITextFieldDelegate {
 }
 
 // MARK: Work with image
-extension NewPlaceViewController {
+extension NewPlaceViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
         // Добавим проверку на доступность выбора изображений
         if UIImagePickerController.isSourceTypeAvailable(source) {
             let imagePicker = UIImagePickerController()
+            
+            // Кто будет делегировать обязанности по выполнению данного метода? И кто будет делегатом?
+            imagePicker.delegate = self
+            
             // Позволяет редактировать изображение перед тем как применить
             imagePicker.allowsEditing = true
             // Определяем тип источника для выбора изображения
@@ -76,5 +85,18 @@ extension NewPlaceViewController {
             // Как и любой контроллер - Алерт контроллер необходимо вызвать
             present(imagePicker, animated: true)
         }
+    }
+    
+    // Реализуем свойство editedImage, которое позволяет изпользовать отредактированное пользователем изображение
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // Необходимо присвоить оутлету изображение и привести к значению UIImage
+        imageOfPlace.image = info[.editedImage] as? UIImage
+        
+        // Далее работает над форматом изображения
+        imageOfPlace.contentMode = .scaleAspectFill
+        imageOfPlace.clipsToBounds = true
+        
+        // Определившиьс с изображением и настройкой формата - необходимо закрыть ImagePickerController
+        dismiss(animated: true)
     }
 }
